@@ -26,7 +26,12 @@ class MessageEvents {
 		if (serverInfo.deleteMsg && message.deletable) message.delete();
 
 		try {
-			await message.channel.send(clip.content);
+			await message.channel.send({
+				content: clip.content,
+				allowedMentions: {
+					parse: []
+				}
+			});
 		} catch (err) {
 			console.log(
 				`Failed to send clip content in channel (${message.guildId} | ${message.channelId})`,
