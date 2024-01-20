@@ -22,4 +22,5 @@ model Clips {
   createdBy  String
   content    String
   uses       Int      @default(0)
+  lastUsed   DateTime @default(now())
 }
