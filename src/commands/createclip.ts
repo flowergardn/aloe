@@ -25,6 +25,28 @@ export class CreateClip {
 		type: ApplicationCommandType.Message
 	})
 	async clipThis(interaction: MessageContextMenuCommandInteraction) {
+		const serverInfo = await prisma.server.findUnique({
+			where: {
+				id: interaction.guildId
+			}
+		});
+
+		if (serverInfo.restricted) {
+			const member = await interaction.guild.members.fetch(interaction.user.id);
+			if (!member.permissions.has('ManageMessages')) {
+				const error = new EmbedBuilder()
+					.setColor(Colors.Red)
+					.setTitle('No can do.')
+					.setDescription(`This server has restricted clip creation to only moderators.`);
+
+				await interaction.reply({
+					embeds: [error],
+					ephemeral: true
+				});
+				return;
+			}
+		}
+
 		const modal = new ModalBuilder().setTitle('Name this clip').setCustomId('name-clip');
 
 		cache.set(interaction.user.id, interaction.targetMessage.id);

@@ -17,7 +17,22 @@ class MessageEvents {
 
 		if (!clip) return;
 
-		message.channel.send(clip.content);
+		const serverInfo = await prisma.server.findUnique({
+			where: {
+				id: message.guildId
+			}
+		});
+
+		if (serverInfo.deleteMsg && message.deletable) message.delete();
+
+		try {
+			await message.channel.send(clip.content);
+		} catch (err) {
+			console.log(
+				`Failed to send clip content in channel (${message.guildId} | ${message.channelId})`,
+				err
+			);
+		}
 
 		await prisma.clips.update({
 			where: {

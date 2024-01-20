@@ -24,3 +24,9 @@ model Clips {
   uses       Int      @default(0)
   lastUsed   DateTime @default(now())
 }
+
+model Server {
+  id         String  @id
+  restricted Boolean @default(false)
+  deleteMsg  Boolean @default(false)
+}
