@@ -18,5 +18,17 @@ class MessageEvents {
 		if (!clip) return;
 
 		message.channel.send(clip.content);
+
+		await prisma.clips.update({
+			where: {
+				id: clip.id
+			},
+			data: {
+				uses: {
+					increment: 1
+				},
+				lastUsed: new Date()
+			}
+		});
 	}
 }
