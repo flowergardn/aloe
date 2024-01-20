@@ -15,8 +15,11 @@ datasource db {
 }
 
 model Clips {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  createdBy String
-  content   String
+  id         String   @id @default(cuid())
+  identifier String
+  serverId   String
+  createdAt  DateTime @default(now())
+  createdBy  String
+  content    String
+  uses       Int      @default(0)
 }

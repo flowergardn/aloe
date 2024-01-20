@@ -8,13 +8,13 @@ import { env } from './env/server';
 export const prisma = new PrismaClient();
 
 export const client = new Client({
-	intents: [],
+	intents: ['Guilds', 'GuildMessages', 'MessageContent'],
 	silent: false
 });
 
 client.on('ready', async () => {
-	await client.clearApplicationCommands();
-	await client.initApplicationCommands();
+	// await client.clearApplicationCommands();
+	// await client.initApplicationCommands();
 
 	console.log('> Bot online, logged in as: ' + client.user!!.tag);
 });
@@ -25,6 +25,7 @@ client.on('interactionCreate', (interaction) => {
 
 async function start() {
 	await importx(__dirname + '/commands/*.{js,ts}');
+	await importx(__dirname + '/events/*.{js,ts}');
 	await client.login(env.TOKEN);
 }
 
